@@ -1,0 +1,27 @@
+'''copyright: 
+https://coderzcolumn.com/tutorials/data-science/how-to-plot-sankey-diagram-in-python-jupyter-notebook-holoviews-and-plotly
+'''
+
+#load library
+import pandas as pd
+import numpy as np
+
+import numpy as hv
+import plotly.graph_objects as go
+import plotly.express as pex
+hv.extension('bokeh')
+
+
+#load dataset
+nz_migration=pd.read_csv("datasets_migration_nz.csv")
+#nz_migration.head()
+
+nz_migration=nz_migration[nz_migration["Measure"]!="Net"]
+nz_migration=nz_migration[~nz_migration["Country"].isin(["Not stated", "All countries"])]
+nz_migration_grouped=nz_migration.groupby(by=["Measure", "Country"]).sum()[["Value"]]
+nz_migration_grouped=nz_migration_grouped.reset_index()
+nz_migration_grouped.head()
+
+
+continents=["Asia", "Australia", "Africa and the Middle East","Europe","Americas","Oceania"]
+continent_wise_migration=nz_migration_grouped[nz_migration_grouped]
