@@ -23,5 +23,68 @@ nz_migration_grouped=nz_migration_grouped.reset_index()
 nz_migration_grouped.head()
 
 
+#case1_normal
 continents=["Asia", "Australia", "Africa and the Middle East","Europe","Americas","Oceania"]
-continent_wise_migration=nz_migration_grouped[nz_migration_grouped]
+continent_wise_migration=nz_migration_grouped[nz_migration_grouped.Country.isin(continents)]
+continent_wise_migration
+
+hv.Sankey(continent_wise_migration)
+
+
+#case1.1_addcolor
+sankey1=hv.Sankey(continent_wise_migration,kdims=["Measure", "Country"],vdims=["Value"])
+
+sankey1.opts(cmap='Colorblind', label_position='left',
+                                edge_color='Country', edge_line_width=0,
+                                node_alpha=1.0, node_width=40, node_sort=True,
+                                width=800, height=600, bgcolor="snow",
+                                title="Population Migration between New Zealand and Other Continents")
+                              
+#case2_Plotly
+all_nodes=continent_wise_migration.Measure.values.tolist()+continent_wise_migration.Country.values.tolist()
+source_indices=[all_nodes.index(measure) for measure in continent_wise_migration.Measure]
+target_indices=[all_nodes.index(country) for country in continent_wise_migration.Country]
+
+fig = go.Figure(data=[go.Sankey(
+    # Define nodes
+    node = dict(
+      label =  all_nodes,
+      color =  "red"
+    ),
+
+    # Add links
+    link = dict(
+      source =  source_indices,
+      target =  target_indices,
+      value =  continent_wise_migration.Value,
+))])
+
+fig.update_layout(title_text="Population Migration between New Zealand and Other Continents",
+                  font_size=10)
+fig.show()
+
+
+#case2.1_addcolor
+all_nodes = continent_wise_migration.Measure.values.tolist() + continent_wise_migration.Country.values.tolist()
+source_indices = [all_nodes.index(measure) for measure in continent_wise_migration.Measure]
+target_indices = [all_nodes.index(country) for country in continent_wise_migration.Country]
+
+
+fig = go.Figure(data=[go.Sankey(
+    node = dict(
+      pad = 20,
+      thickness = 20,
+      line = dict(color = "black", width = 1.0),
+      label =  all_nodes,
+    ),
+
+    link = dict(
+      source =  source_indices,
+      target =  target_indices,
+      value =  continent_wise_migration.Value,
+))])
+
+fig.update_layout(title_text="Population Migration between New Zealand and Other Continents",
+                  font_size=10)
+fig.show()
+
