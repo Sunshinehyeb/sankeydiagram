@@ -6,7 +6,7 @@ https://coderzcolumn.com/tutorials/data-science/how-to-plot-sankey-diagram-in-py
 import pandas as pd
 import numpy as np
 
-import numpy as hv
+import holoviews as hv
 import plotly.graph_objects as go
 import plotly.express as pex
 hv.extension('bokeh')
